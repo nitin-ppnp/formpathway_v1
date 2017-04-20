@@ -1,0 +1,71 @@
+function [success] = testFormPathway( videofolder, snapshotfolder )
+% computeRBFProfiles(varargin);
+%          Test theIt will save the return result in simfolder.
+%
+%                Version 1.1,  7 April 2016 by Leonid Fedorov.
+%
+%                Tested with MATLAB 8.4 on a Xeon E5-1620 3.6Ghz under W7
+%
+
+
+
+
+% % % 0.0 In the basic setting we just have the AVIs in 'videofolder'
+% % % and specify the 'snapshotfolder' to save the network response
+% % % (it will be created automatically with intermediate computations).
+
+narginchk(1,1)
+
+if 7 ~= exist(folder, 'dir')
+    display([folder, ' is not a valid directory.'])
+    success = 0;
+    return
+end
+    
+% % % 1.1 Convert your videos to the images for easy debugging. If you know that
+% % % you want a smaller number of images and/or snapshot neurons - its best
+% % % to change it already inside this function to save time(e.g. save every
+% % % 2nd frame).
+
+conditionList = storeAVIasPNGset(folder);
+
+% % % 1.2 Set the conditionList explicitly here as a cell array of string (full) 
+% % % paths,if you don't want to call storeAVIasPNGset() each time. E.g.:
+
+% conditionList = { 'test\0degree_arm', 'test\45degree_arm', 'test\90degree_arm'};
+
+% % % 2.1 compute the form pathway responses. This saves the result automatically
+% % % as 'formresp.mat' in same folder where the condition images are. The
+% % % returned 'formrespList' also has all responses, however.
+
+formrespList = cellfun(@(x) computeFormOutput(x), conditionList, 'UniformOutput', false);
+
+% % % 2.2 Plot the responses if over the stimuli to debug the filters(if needed).
+% % % But saving  over 50 900x900 images is very slow, only use to debug.
+
+% cellfun(@(x) plotFormOutput(x), conditionList, 'UniformOutput', false);
+
+
+% % % 3.1 This loads the the RBF responses from the disk for each condition. 
+% % % It also saves the result as '_networkResp.mat' in the folder that you
+% % % specify explicitly, e.g. 'sim'. '_networkResp.mat' is a structure with
+% % % one file drepresenting the array of responses, and another field 
+% % % representing the paths to the original conditions.
+
+simulationFolder = snapshotfolder;
+conditionList{numel(conditionList) + 1} = simulationFolder;
+computeRBFProfiles(conditionList);
+
+% % % 3.2 Simply load and plot the snapshot population responses to each
+% % % other, without saving anything. One snapshot population response
+% % % represents the un-smoothed input to the dynamic layers of the model.
+% % % One can load these responses directly and smooth them via ridge
+% % % regression.
+
+plotRBFProfiles(simulationFolder);
+
+
+success = 1;
+
+return
+
