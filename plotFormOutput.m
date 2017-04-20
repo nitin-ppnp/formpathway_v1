@@ -32,9 +32,9 @@ V4pos = formdata.formresp.v4pos;
 nrows = size(V4, 1);
 ncols = size(V4, 2);
 
-for rowInd = 1 : nrows,
-    for colInd = 1 : ncols,       
-        subaxis(nrows, ncols, nrows*(rowInd - 1) + colInd); plot(squeeze(V4(rowInd, colInd, :, :))');
+for rowInd = 1 : nrows
+    for colInd = 1 : ncols       
+        subplot(nrows, ncols, nrows*(rowInd - 1) + colInd); plot(squeeze(V4(rowInd, colInd, :, :))');
         title(['Cells at row: ', num2str(rowInd), ' column: ', num2str(colInd)]);
     end
 end
