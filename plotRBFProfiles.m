@@ -31,8 +31,8 @@ keys = respdata.networkResp.meta;
 
 [popnum,respnum] = size(nresp);
 figure;
-for rowind = 1 : popnum,
-    for colind = 1:respnum,
+for rowind = 1 : popnum
+    for colind = 1:respnum
         display((rowind-1)*popnum + colind)
         subplot(popnum, popnum, (rowind-1)*(popnum) + colind);
         surf(nresp{rowind, colind},'EdgeColor','none');

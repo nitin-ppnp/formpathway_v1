@@ -16,7 +16,7 @@ function [rbfmatrix] = rbfOfColumns(beta, array1, array2)
 [k,l] = size(array2);
 
 if ( m ~= k)
-    display(['Dimensions of column vectors in input arrays are not equal.']);
+    disp('Dimensions of column vectors in input arrays are not equal.');
 else
     
 

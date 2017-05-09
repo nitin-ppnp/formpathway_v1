@@ -5,7 +5,7 @@ function [ rbfval ] = rbfcolumns( beta, arr1,arr2 )
 [k,l] = size(arr2);
 
 if ( m ~= k)
-    display(['Dimensions of column vectors in input arrays are not equal.']);
+    disp('Dimensions of column vectors in input arrays are not equal.');
 else
     
 diff = zeros(m,n,l);
