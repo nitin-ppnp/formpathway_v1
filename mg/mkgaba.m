@@ -1,4 +1,4 @@
-function  GABA = mkgaba();
+function  GABA = mkgaba()
 %MKGABA   returns a 3D array with 2D Gabor filters with multiple
 %         different directions.
 

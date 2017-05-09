@@ -40,8 +40,8 @@ function [networkResp] = computeRBFProfiles(varargin)
 % example, in Python 2.7+ when you pass a list to the function, it does
 % NOT pack it into another list.
 
-stimulipaths = varargin{1}(1 : end - 1)%cell array of stimuli keys
-simfolder = varargin{1}(end)%contents of the last cell is a char key
+stimulipaths = varargin{1}(1 : end - 1);%cell array of stimuli keys
+simfolder = varargin{1}(end);%contents of the last cell is a char key
 %Load a structure array of responses, where each response structure is derived from varargin
 resplist = cellfun(@(x) loadPathwayResp(x), stimulipaths, 'UniformOutput', false); 
 
@@ -49,7 +49,14 @@ resplist = cellfun(@(x) loadPathwayResp(x), stimulipaths, 'UniformOutput', false
 %From each structure element get V4 responses as a cell array
 v4list = cellfun(@(x) x.('v4'), resplist, 'UniformOutput', false);
 % Reshape V4 responses, so 3d response array to each image is a 1d array
-vecresp = cellfun(@(x) reshape(x, [size(x, 1) * size(x, 2) * size(x, 3), size(x, 4)]), v4list, 'UniformOutput', false);
+
+
+% vecresp = cellfun(@(x) reshape(x, [size(x, 1) * size(x, 2) * size(x, 3), size(x, 4)]), v4list, 'UniformOutput', false);   
+
+% To add shape detection
+vecresp = cellfun(@(x) squeeze(max(reshape(x, [size(x, 1) * size(x, 2), size(x, 3), size(x, 4)]),[],1)), v4list, 'UniformOutput', false);   %  Nitin
+
+
 
 
 rbf_scale = 0.05; %change this single parameter to change the RBF width

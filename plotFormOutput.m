@@ -31,7 +31,7 @@ V4pos = formdata.formresp.v4pos;
 
 nrows = size(V4, 1);
 ncols = size(V4, 2);
-
+f1 = figure;
 for rowInd = 1 : nrows
     for colInd = 1 : ncols       
         subplot(nrows, ncols, nrows*(rowInd - 1) + colInd); plot(squeeze(V4(rowInd, colInd, :, :))');
@@ -43,6 +43,7 @@ end
 listing = getFrameList(stimulipath);
 
 f = figure;
+figure(f);
 fpos = get(f, 'position');
 [posX, posY] = meshgrid(V4pos(1, :), V4pos(2, :));
 for ind = 1:numel(listing)

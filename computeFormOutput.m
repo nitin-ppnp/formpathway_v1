@@ -1,4 +1,4 @@
-function [formresp] = computeFormOutput(stimulipath)
+function [formresp] = computeFormOutput(stimulipath,properties)
 % [formresp] = computeFormOutput(stimulipath);
 %          computes responses of the form pathway of the Giese-Poggio 2003
 %          model to the stimuli of large shaded walkers. Takes stimulipath as
@@ -13,53 +13,24 @@ function [formresp] = computeFormOutput(stimulipath)
 %                Tested with MATLAB 8.4 on a Xeon E5-1620 3.6Ghz under W7
 %
 
-narginchk(1,1)
-
+%% Load the stored images 
 PXM = loadPixelArray(stimulipath);
 
-timeSize = size(PXM, 3)
-% create the Gabor function array
-GABA = mkgaba;
+
+%% Layer 1 processing (Gabor filters)
+[formresp.v1f, formresp.v1c, formresp.v1pos] = L1(PXM, properties);
 
 
-for k = 1:timeSize,
-   [FV1f(:, :, :, k), FV1c(:, :, :, k),  xgct, ygct] = cgabmul(squeeze(PXM(:, :, k)), GABA);
-end;
+%% Layer 2 processing (pooling for bar detection)
+[formresp.FV4bar, formresp.v4pos] = L2(formresp.v1f, formresp.v1c,properties);
 
 
-
-%         rectify, normalize and threshold
-thrFV1f = 10;        % threshold
-nmfFV1f = 70;        % fixed normalization factor
-thrFV1c = 10;        % threshold   
-nmfFV1c = 70;        % fixed normalization factor
-FV1f = level(FV1f, thrFV1f, nmfFV1f);
-FV1c = level(FV1c, thrFV1c, nmfFV1c);
-% display(1)
+%% Layer 3 processing (for position dependent shape detection)
+formresp.l4resp = L4(formresp,properties); 
 
 
-%         CREATE THE V4 RESPONSES (BAR DETECTORS)
-
-%         calculate the cell responses
-for k = 1:timeSize,       % iterate over time steps
-   [FV4bar(:, :, :, k), xcv4, ycv4] =  V1mr2V4rb(squeeze(FV1f(:, :, :, k)), ...
-                     squeeze(FV1c(:, :, :, k)), xgct, ygct);
-end;
-
-thrV4b = 0.01;         % threshold
-nmfFV4bar = 1;         % fixed normalization factor
-FV4bar = level(FV4bar, thrV4b, nmfFV4bar);
-
-formresp = struct('v1c',FV1c, 'v1f', FV1f, 'v4',FV4bar, 'v4pos', [xcv4; ycv4]);
-
-
+%% 
 save(fullfile(stimulipath, strcat('formresp','.mat')),'formresp')
-
-% save for backup in a separate folder named as timestamp
-savepath = strrep('now',':','-');
-mkdir(stimulipath,savepath)
-respath = fullfile(stimulipath, savepath, strcat('formresp','.mat'));
-save(respath, 'formresp');
 
 
 return

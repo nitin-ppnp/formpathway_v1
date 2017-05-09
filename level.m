@@ -13,6 +13,12 @@ function [result] = level(array, lbound, divisor)
 % \end{cases}
 % % % 
 
-result = (array - lbound).*(array > lbound / divisor);
+%%
+% result = (array - lbound).*(array > lbound / divisor);          %%% Nitin
+
+%% Nitin
+result = array;
+result(result<lbound)=0;
+result(result>lbound) = result(result>lbound)/divisor;
 
 return

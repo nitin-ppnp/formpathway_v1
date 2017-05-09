@@ -1,4 +1,4 @@
-function  [FV4bar, xcv4, ycv4] = V1mr2V4rb(FV1f, FV1c,  xgct, ygct);
+function  [FV4bar, xcv4, ycv4] = V1mr2V4rb(FV1f, FV1c,  xgct, ygct)
 %[FV4bar, xcv4, ycv4] = V1r2V4rb(FV1f, FV1c, xgct, ygct);
 %         transforms the responses FV1 of the V1 Gabor filter
 %         on fine and coarsae scale of resolution (FV1f and FV1c)
@@ -22,8 +22,8 @@ szFV1 = size(FV1f);
 %nrfV4 =  [6, 6];
 %ngb = [-1 : 1];        %  neigborhood vector
 %ngb = [-2 : 2];        %  neigborhood vector
-ngb = [-3 : 3];        %  neigborhood vector
-nrfV4 =  [4, 4];
+ngb = (-3 : 3);        %  neigborhood vector
+nrfV4 =  [20, 20];
 
 %phbd = [0:szFV1(3)-1];
 %barlg = 3; 0.1;            %  length of the bars
@@ -35,9 +35,9 @@ nrfV4 =  [4, 4];
 %         define V4 RF centers equally spaced between 
 %         the Gabor filters
 dctx = (max(xgct) - min(xgct)) / nrfV4(1);
-xcv4 = xgct(1) + (-0.5 + [1:nrfV4(1)]) * dctx;
+xcv4 = xgct(1) + (-0.5 + 1:nrfV4(1)) * dctx;
 dcty = (max(ygct) - min(ygct)) / nrfV4(2);
-ycv4 = ygct(1) + (-0.5 + [1:nrfV4(2)]) * dcty;
+ycv4 = ygct(1) + (-0.5 + 1:nrfV4(2)) * dcty;
 
 
 
@@ -53,8 +53,8 @@ ynv = Yng(:);
 
 
 %         calculate the cell response
-for l = 1:length(xcv4),  %iterate over all RF centers
-   for m = 1:length(ycv4),
+for l = 1:length(xcv4)  %iterate over all RF centers
+   for m = 1:length(ycv4)
       
          %   find closest V1 cell to RF center of the V4 cell
          index = (xgabc - xcv4(l)).^2 +  (ygabc - ycv4(m)).^2;
@@ -78,10 +78,10 @@ for l = 1:length(xcv4),  %iterate over all RF centers
          yv_tmp = yv_tmp(indval);
         
          %   get maximum acivity over RF for each direction and scale
-         for n = 1:szFV1(3),   % iterate over the directions
+         for n = 1:szFV1(3)   % iterate over the directions
                  max_f = max(diag(FV1f(yv_tmp, xv_tmp, n)));
                  max_c = max(diag(FV1c(yv_tmp, xv_tmp, n)));
                  FV4bar(m, l, n) = max(max_f, max_c);
-         end;
-   end;
-end;
+         end
+   end
+end

@@ -27,9 +27,11 @@ diarf = (szGABA(1) -1) / 2;
 %xgct = 20:8:120;         
 %ygct = 10:8:200;%original filter positions
 %xgct = 10:8:170;%original filter positions
-ygct = 46:36:900; %%filter positions for 900x900 walker
-xgct = 46:36:900; %%filter positions for 900x900 walker
+% ygct = 46:36:900; %%filter positions for 900x900 walker
+% xgct = 46:36:900; %%filter positions for 900x900 walker
 
+ygct = 20:8:500;    %%filter positions for 500x500 animacy display
+xgct = 20:8:500;    %%filter positions for 500x500 animacy display
 
 [xgabc, ygabc] = meshgrid(xgct, ygct);
 
@@ -42,9 +44,9 @@ xgct = 46:36:900; %%filter positions for 900x900 walker
 %                the part of the RF that is overlapping 
 %                with the pixelmap                   
 disp('Calculating Gabor cell respose.')
-for l = 1:szGABA(3),
-   for m = 1:length(xgct),
-      for r = 1:length(ygct),
+for l = 1:szGABA(3)
+   for m = 1:length(xgct)
+      for r = 1:length(ygct)
          indexx = xgct(m) - diarf : ...
             xgct(m) + diarf;
          indexy = ygct(r) - diarf : ...
@@ -54,9 +56,9 @@ for l = 1:szGABA(3),
          pwp = times(GABA(ivy, ivx, l),  PXM(indexy(ivy), ...
                indexx(ivx)));
          FV1f(r, m, l) = sum((pwp(:)));
-      end;
+      end
    end
-end;
+end
 
 %                COARSE RESOLUTION
 
@@ -74,9 +76,9 @@ ygctc = ygct / 2;
 %                the part of the RF that is overlapping 
 %                with the pixelmap                   
 disp('Calculating Gabor cell respose.')
-for m = 1:length(xgctc),
-   for r = 1:length(ygctc),
-      for l = 1:szGABA(3),
+for m = 1:length(xgctc)
+   for r = 1:length(ygctc)
+      for l = 1:szGABA(3)
          indexx = (xgctc(m) - diarf) : (xgctc(m) + diarf);
          indexy = ygctc(r) - diarf : ...
                   ygctc(r) + diarf;
@@ -84,9 +86,9 @@ for m = 1:length(xgctc),
          ivy = find(indexy > 0 & indexy <= length(subsiy));
          pwp = times(GABA(ivy, ivx, l),  PXMc(indexy(ivy), indexx(ivx)));
          FV1c(r, m, l) = sum((pwp(:)));
-      end;
+      end
    end
-end;
+end
 
 
              

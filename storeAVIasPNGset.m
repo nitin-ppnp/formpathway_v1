@@ -40,7 +40,7 @@ for i = 1 : numel(videoNameList)
     %reading all frames before processing them can be very slow, however:
     display(['Read ', num2str(size(frames,4)),' frames from ', video.name,' in ', num2str(toc),' seconds.']);
     
-    for frindex = 1 : 5: size(frames, 4)
+    for frindex = 1 :5: size(frames, 4)
         videoFrame = squeeze(frames(:, :, :, frindex));
 %         videoFrame(:,:,2:3) = [];
 %         videoFrame = videoFrame(50:850,300:600); %cut the window from the video if needed

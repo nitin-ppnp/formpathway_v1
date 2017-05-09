@@ -1,4 +1,9 @@
-function [success] = testFormPathway( videofolder, snapshotfolder )
+videofolder = 'straight_traj_rect';
+
+snapshotfolder = 'snapshot_test';
+
+Properties;
+
 %  testFormPathway( videofolder, snapshotfolder )
 %          Test the Form pathway on video in 'videofolder'. Saves the 
 %          result in 'snapshotfolder'. Uses 3 original filtering and 
@@ -17,7 +22,6 @@ function [success] = testFormPathway( videofolder, snapshotfolder )
 % % % and specify the 'snapshotfolder' to save the network response
 % % % (it will be created automatically with intermediate computations).
 
-narginchk(1,2)
 folder = videofolder;
 if 7 ~= exist(folder, 'dir')
     display([folder, ' is not a valid directory.'])
@@ -48,7 +52,7 @@ formrespList = cellfun(@(x) computeFormOutput(x), conditionList, 'UniformOutput'
 % % % 2.2 Plot the responses if over the stimuli to debug the filters(if needed).
 % % % But saving  over 50 900x900 images is very slow, only use to debug.
 
-cellfun(@(x) plotFormOutput(x), conditionList, 'UniformOutput', false);
+% cellfun(@(x) plotFormOutput(x), conditionList, 'UniformOutput', false);
 
 
 % % % 3.1 This loads the the RBF responses from the disk for each condition. 
@@ -57,9 +61,11 @@ cellfun(@(x) plotFormOutput(x), conditionList, 'UniformOutput', false);
 % % % one file drepresenting the array of responses, and another field 
 % % % representing the paths to the original conditions.
 
-simulationFolder = snapshotfolder;
-conditionList{numel(conditionList) + 1} = simulationFolder;
-computeRBFProfiles(conditionList);
+respList = cellfun(@(x) L4(x,properties),formrespList,'UniformOutput',false);
+
+
+networkResp = RBF(respList);
+
 
 % % % 3.2 Simply load and plot the snapshot population responses to each
 % % % other, without saving anything. One snapshot population response
@@ -69,8 +75,4 @@ computeRBFProfiles(conditionList);
 
 plotRBFProfiles(simulationFolder);
 
-
-success = 1;
-
-return
 
