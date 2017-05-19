@@ -29,6 +29,3 @@ formrespList = cellfun(@(x) computeFormOutput(x,properties), conditionList, 'Uni
 
 
 
-networkResp = RBF(respList);
-
-
