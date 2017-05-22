@@ -18,11 +18,18 @@ end
 %% Run the properties script to initialize the model parameters
 Properties;
 
-%% Read the videos and save them as the sequence of images. The model will
-% take these images as the input.
-conditionList = storeAVIasPNGset(folder);
+%% 
 
-%% The sequence of images are fed to the model and the output is a cell
+if properties.isTraining
+% Get the path to training images
+    conditionList = getTrainingImagePath(properties);
+else
+% Read the videos and save them as the sequence of images. The model will
+% take these images as the input.
+    conditionList = storeAVIasPNGset(folder);
+end
+%% 
+% The sequence of images are fed to the model and the output is a cell
 % array 'formrespList'. Each element of this array is a structure, and, corresponds to each
 % video. 
 formrespList = cellfun(@(x) computeFormOutput(x,properties), conditionList, 'UniformOutput', false);

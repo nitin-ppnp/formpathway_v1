@@ -1,3 +1,7 @@
+%% Model Params
+properties.isTraining = true;
+properties.TrainingPath = 'Training data/Shapes/';
+
 
 %% Layer 1 Properties
 properties.l1.gaborLen = 10;

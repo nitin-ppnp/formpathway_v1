@@ -15,7 +15,7 @@ l4Resp = cell(nRecField,nRecField);
 for i = 1:length(xct)
     for j=1:length(yct)
         idxx = xct(i)-fDist:xct(i)+fDist;
-        idxy = yct(i)-fDist:yct(i)+fDist;
+        idxy = yct(j)-fDist:yct(j)+fDist;
         l4Resp{i,j} = v4resp(idxx,idxy,:,:);
     end
 end
