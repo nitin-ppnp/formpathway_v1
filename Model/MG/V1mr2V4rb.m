@@ -1,4 +1,4 @@
-function  [FV4bar, xcv4, ycv4] = V1mr2V4rb(FV1f, FV1c,  xgct, ygct)
+function  [FV4bar, xcv4, ycv4] = V1mr2V4rb(FV1f, FV1c,  xgct, ygct,properties)
 %[FV4bar, xcv4, ycv4] = V1r2V4rb(FV1f, FV1c, xgct, ygct);
 %         transforms the responses FV1 of the V1 Gabor filter
 %         on fine and coarsae scale of resolution (FV1f and FV1c)
@@ -22,8 +22,8 @@ szFV1 = size(FV1f);
 %nrfV4 =  [6, 6];
 %ngb = [-1 : 1];        %  neigborhood vector
 %ngb = [-2 : 2];        %  neigborhood vector
-ngb = (-3 : 3);        %  neigborhood vector
-nrfV4 =  [20, 20];
+ngb = properties.l2.ngbVec;        %  neigborhood vector
+nrfV4 =  properties.l2.numV4rf;
 
 %phbd = [0:szFV1(3)-1];
 %barlg = 3; 0.1;            %  length of the bars

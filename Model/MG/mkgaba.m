@@ -1,4 +1,4 @@
-function  GABA = mkgaba()
+function  GABA = mkgaba(properties)
 %MKGABA   returns a 3D array with 2D Gabor filters with multiple
 %         different directions.
 
@@ -11,11 +11,11 @@ function  GABA = mkgaba()
 
 %         set default parameters
 
-sag = 10 * 1;12;          % length
-sbg = sag * 0.7;8 / 15;   % width
-k0g = 2 * pi / sag / 1.8; % wave number
+sag = properties.l1.gaborLen;          % length
+sbg = properties.l1.gaborWidth;   % width
+k0g = properties.l1.gaborWaveNum; % wave number
 
-phgab = [0:7];            % angles
+phgab = 0:7;            % angles
 phgab = phgab / length(phgab) * pi;
 
 GABA = mkgabf(phgab, [sag, sbg], k0g);

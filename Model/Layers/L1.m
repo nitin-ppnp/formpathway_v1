@@ -4,11 +4,11 @@ function [ FV1f, FV1c, pos ] = L1( PXM, properties )
 
 timeSize = size(PXM, 3);
 % create the Gabor function array
-GABA = mkgaba;
+GABA = mkgaba(properties);
 
 
 for k = 1:timeSize
-   [FV1f(:, :, :, k), FV1c(:, :, :, k),  xgct, ygct] = cgabmul(squeeze(PXM(:, :, k)), GABA);
+   [FV1f(:, :, :, k), FV1c(:, :, :, k),  xgct, ygct] = cgabmul(squeeze(PXM(:, :, k)), GABA,properties);
 end
 
 pos = [xgct;ygct];

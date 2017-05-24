@@ -1,4 +1,4 @@
-function  [FV1f, FV1c,  xgct, ygct] = cgabmul(PXM, GABA, xc, yc);
+function  [FV1f, FV1c,  xgct, ygct] = cgabmul(PXM, GABA, properties)
 %[FV1f, FV1c,  xgct, ygct] = 
 %         cgabmul(PXM, GABA, xc, yc);
 %         returns an array of responses of the Gabor filters
@@ -30,8 +30,8 @@ diarf = (szGABA(1) -1) / 2;
 % ygct = 46:36:900; %%filter positions for 900x900 walker
 % xgct = 46:36:900; %%filter positions for 900x900 walker
 
-ygct = 20:8:500;    %%filter positions for 500x500 animacy display
-xgct = 20:8:500;    %%filter positions for 500x500 animacy display
+ygct = properties.l1.ygct;    %%filter positions for 500x500 animacy display
+xgct = properties.l1.xgct;    %%filter positions for 500x500 animacy display
 
 [xgabc, ygabc] = meshgrid(xgct, ygct);
 
@@ -68,8 +68,8 @@ szPXM = size(PXM);
 subsiy = 1:2:szPXM(1);
 subsix = 1:2:szPXM(2);
 PXMc = PXM(subsiy, subsix);
-xgctc = xgct / 2;
-ygctc = ygct / 2;
+xgctc = round(xgct / 2);
+ygctc = round(ygct / 2);
  
 
 %                calculate the Gabor filter output for 

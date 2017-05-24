@@ -26,7 +26,7 @@ PXM = loadPixelArray(stimulipath);
 
 
 %% Layer 3 processing (for position dependent shape detection)
-formresp.l4resp = L4(formresp.v4,properties); 
+formresp.l4resp = L4(formresp.v4,formresp.v4pos,properties); 
 
 
 %% 
