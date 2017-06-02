@@ -12,7 +12,7 @@ ygct = v1pos(2,:);
 %         calculate the cell responses
 for k = 1:timeSize       % iterate over time steps
    [FV4bar(:, :, :, k), xcv4, ycv4] =  V1mr2V4rb(squeeze(FV1f(:, :, :, k)), ...
-                     squeeze(FV1c(:, :, :, k)), xgct, ygct,properties);
+                     squeeze(FV1c(:, :, :, k)),properties);
 end
 
 pos = [xcv4;ycv4]; 

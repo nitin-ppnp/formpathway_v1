@@ -30,6 +30,7 @@ formresp.l4resp = L4(formresp.v4,formresp.v4pos,properties);
 
 
 %% 
+formresp.properties = properties;
 save(fullfile(stimulipath, strcat('formresp','.mat')),'formresp')
 
 

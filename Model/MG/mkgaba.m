@@ -16,7 +16,20 @@ sbg = properties.l1.gaborWidth;   % width
 k0g = properties.l1.gaborWaveNum; % wave number
 
 phgab = 0:7;            % angles
+
+%% Martin's gabor
+
 phgab = phgab / length(phgab) * pi;
 
 GABA = mkgabf(phgab, [sag, sbg], k0g);
+
+%% Serre's gabor
+% 
+% [~,G,~,~] = init_gabor(phgab*180/8,21,3.6); 
+% for i=1:size(G,2)
+%     GABA(:,:,i) = reshape(G(:,i),[21,21]);
+% end
+
+
+
 

@@ -23,8 +23,8 @@
 
 
 % Add the subdirectories to the path.
-addpath('kMeans');
-addpath('RBFN');
+% addpath('kMeans');
+% addpath('RBFN');
 
 % Load the data set. 
 % This loads two variables, X and y.

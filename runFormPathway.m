@@ -41,11 +41,11 @@ cat1size = size(formrespList{1,1}.v1f,4);
 cat2size = size(formrespList{1,2}.v1f,4); 
 
 for i=1:cat1size
-    t = formrespList{1,1}.l4resp{4,4}(:,:,:,i);
+    t = formrespList{1,1}.l4resp{5,5}(:,:,:,i);
     arrresp(:,i) = t(:)-mean(t(:));
 end
 for i=1:cat2size
-    t = formrespList{1,2}.l4resp{4,4}(:,:,:,i);
+    t = formrespList{1,2}.l4resp{6,6}(:,:,:,i);
     arrresp(:,i+cat1size) = t(:)-mean(t(:));
 end
 

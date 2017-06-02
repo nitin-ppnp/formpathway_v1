@@ -36,4 +36,5 @@ for k = 1:length(ph)
            Gtmp = Gtmp .* cos(kw * (sin(phtmp) * Xgab + ...
                                      cos(phtmp) * Ygab));
            GABA(:, :, k) = Gtmp;
+           GABA(:,:,k) = GABA(:,:,k)-mean(mean(GABA(:,:,k)));
 end
