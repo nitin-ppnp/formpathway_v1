@@ -1,6 +1,10 @@
 %% Model Params
 properties.isTraining = true;
-properties.TrainingPath = 'Training data/Shapes/';
+properties.TrainingPath = 'Data/Training_data/';
+properties.TestPath = 'Data/Test_data/';
+properties.l3neuronToTrain = [5,5];
+properties.TestDataPerCat = 10;
+properties.TrainDataPerCat = 1;
 properties.frame.dim = [500,500];
 
 %% Layer 1 Properties

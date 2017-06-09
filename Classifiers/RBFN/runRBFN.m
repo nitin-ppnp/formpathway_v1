@@ -48,7 +48,7 @@ m = size(X, 1);
 disp('Training the RBFN...');
 
 % Train the RBFN using 10 centers per category.
-[Centers, betas, Theta] = trainRBFN(X, y, 1, true);
+[Centers, betas, Theta] = trainRBFN(X, y, 2, true);
  %%
 % % % % % % ================================
 % % % % % %         Contour Plots

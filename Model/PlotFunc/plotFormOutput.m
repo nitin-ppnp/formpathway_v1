@@ -47,9 +47,9 @@ listing = getFrameList(stimulipath);
 
 for ind = 1:numel(listing)
     
-    f = figure;
-figure(f);
-fpos = get(f, 'position');
+%     f = figure;
+% figure(f);
+% fpos = get(f, 'position');
 [posX, posY] = meshgrid(V4pos(1, :), V4pos(2, :));
 
 
@@ -67,9 +67,9 @@ end
     
     img_in = im2double(imread(fullfile(stimulipath,listing{ind})));
     if size(img_in,3) > 1, img_in(:,:,2:3) = []; end
-    if ~isequal([fpos(3), fpos(4)], size(img_in))
-        set(f, 'position', [0 0 size(img_in)])
-    end
+%     if ~isequal([fpos(3), fpos(4)], size(img_in))
+%         set(f, 'position', [0 0 size(img_in)])
+%     end
     imshow(img_in, 'Border', 'tight'); hold on;
     for i = 1:8
 %         oneresp = V4(:, :, i, ind);
@@ -82,18 +82,18 @@ end
 % %     text(10, 90, num2str(mean(V4(:, :, :, ind),3)),'BackgroundColor',[0.5 0.5 0.5]); 
 
     
-    currFrame = getframe(gcf);
-    if ~isdir(fullfile(stimulipath,'formquiver')), mkdir(stimulipath,'formquiver'); end
-    imwrite(currFrame.cdata, fullfile(stimulipath,'formquiver',['q',listing{ind}]),'PNG');
-    pause(0.03)
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     currFrame = getframe(gcf);
+%     if ~isdir(fullfile(stimulipath,'formquiver')), mkdir(stimulipath,'formquiver'); end
+%     imwrite(currFrame.cdata, fullfile(stimulipath,'formquiver',['q',listing{ind}]),'PNG');
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % plot the l3 rec field
 coords = formdata.formresp.properties.rfmap.l3(5,5,:,:);
 coords = squeeze(coords);
 patch(coords(:,2),coords(:,1),'b','FaceAlpha',0.3);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+waitforbuttonpress;
 
 end
 

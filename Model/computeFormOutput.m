@@ -1,4 +1,4 @@
-function [formresp] = computeFormOutput(stimulipath,properties)
+function [success] = computeFormOutput(stimulipath,properties)
 % [formresp] = computeFormOutput(stimulipath);
 %          computes responses of the form pathway of the Giese-Poggio 2003
 %          model to the stimuli of large shaded walkers. Takes stimulipath as
@@ -14,25 +14,29 @@ function [formresp] = computeFormOutput(stimulipath,properties)
 %
 
 %% Load the stored images 
+disp(['loading Images from',' ',stimulipath]);
 PXM = loadPixelArray(stimulipath);
 
 
 %% Layer 1 processing (Gabor filters)
+disp('Layer 1 Processing with Gabor filters...');
 [formresp.v1f, formresp.v1c, formresp.v1pos] = L1(PXM, properties);
 
 
 %% Layer 2 processing (pooling for bar detection)
+disp('Layer 2 Processing (Max Pooling)...');
 [formresp.v4, formresp.v4pos] = L2(formresp.v1f, formresp.v1c,formresp.v1pos,properties);
 
 
 %% Layer 3 processing (for position dependent shape detection)
+disp('Layer 3 Processing...');
 formresp.l4resp = L4(formresp.v4,formresp.v4pos,properties); 
 
 
 %% 
 formresp.properties = properties;
-save(fullfile(stimulipath, strcat('formresp','.mat')),'formresp')
+save(fullfile(stimulipath, strcat('formresp','.mat')),'formresp','-v7.3');
 
+success = true;
 
-return
-
+end

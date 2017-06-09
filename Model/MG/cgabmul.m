@@ -43,7 +43,7 @@ xgct = properties.l1.xgct;    %%filter positions for 500x500 animacy display
 %                calculate the Gabor filter output for 
 %                the part of the RF that is overlapping 
 %                with the pixelmap                   
-disp('Calculating Gabor cell respose.')
+% disp('Calculating Gabor cell respose.')
 for l = 1:szGABA(3)
    for m = 1:length(xgct)
       for r = 1:length(ygct)
@@ -75,7 +75,7 @@ ygctc = round(ygct / 2);
 %                calculate the Gabor filter output for 
 %                the part of the RF that is overlapping 
 %                with the pixelmap                   
-disp('Calculating Gabor cell respose.')
+% disp('Calculating Gabor cell respose.')
 for m = 1:length(xgctc)
    for r = 1:length(ygctc)
       for l = 1:szGABA(3)
