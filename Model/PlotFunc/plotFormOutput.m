@@ -46,7 +46,7 @@ listing = getFrameList(stimulipath);
 figure;
 
 for ind = 1:numel(listing)
-    
+
 %     f = figure;
 % figure(f);
 % fpos = get(f, 'position');
