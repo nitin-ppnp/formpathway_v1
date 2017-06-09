@@ -43,7 +43,7 @@ ncols = size(V4, 2);
 listing = getFrameList(stimulipath);
 
 
-
+figure;
 
 for ind = 1:numel(listing)
     
