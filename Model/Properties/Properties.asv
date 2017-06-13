@@ -7,7 +7,7 @@ properties.TestDataPerCat = 10;
 properties.TrainDataPerCat = 2;
 properties.frame.dim = [500,500];
 properties.numShapes = 3;
-properties.numDirections = 6;
+properties.numDirec = 3;
 
 %% Layer 1 Properties
 properties.l1.gaborLen = 5;

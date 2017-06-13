@@ -5,17 +5,17 @@ Properties;
 %%
 
 % Get the path to training images
-[train, test] = getImagePath(properties);
+[TrainCats, TestCats] = getImagePath(properties);
 TrainList = {};
 TestList = {};
-for m=1:length(train)
-    for n=1:length(train{m})
-        TrainList = [TrainList train{m}{n}];
+for m=1:length(TrainCats)
+    for n=1:length(TrainCats{m})
+        TrainList = [TrainList TrainCats{m}{n}];
     end
 end
-for m=1:length(test)
-    for n=1:length(test{m})
-        TestList = [TestList test{m}{n}];
+for m=1:length(TestCats)
+    for n=1:length(TestCats{m})
+        TestList = [TestList TestCats{m}{n}];
     end
 end
 
@@ -59,7 +59,7 @@ disp('Training the RBFN...');
 % Train the RBFN using 1 centers per category.
 [Centers, betas, Theta] = trainRBFN(X, y, 1, true);
 
-save('model.mat', 'Centers','betas','Theta','TestList','TrainList','properties');
+save('model.mat', 'Centers','betas','Theta','TestCats','TrainCats','properties');
 
 %%
 % ========================================
@@ -90,15 +90,16 @@ for i = 1 : m
     end
     
 end
-% Get which class does miscalssified samples belongs to and predicted to
-% which class
-for i=2:length(idxes)
-mask=(idxes(i)-wrong)>0 & (wrong-idxes(i-1))>0;
-w(:,i-1) = wrong-idxes(i-1)+1;
-w(mask==0,i-1) = 0;
+% Get the true and predicted class of the miscalssified samples
+if ~isempty(wrong)
+    for i=2:length(idxes)
+        mask=(idxes(i)-wrong)>0 & (wrong-idxes(i-1))>0;
+        w(:,i-1) = wrong-idxes(i-1)+1;
+        w(mask==0,i-1) = 0;
+    end
+    w = sum(w,2);
+    w = [w,y(wrong),y_prime(wrong)];
 end
-w = sum(w,2);
-w = [w,y(wrong),y_prime(wrong)];
 
 accuracy = numRight / m * 100;
 fprintf('Training accuracy: %d / %d, %.1f%%\n', numRight, m, accuracy);
@@ -109,20 +110,20 @@ fprintf('Training accuracy: %d / %d, %.1f%%\n', numRight, m, accuracy);
 %       Measure Validation data Accuracy
 % ========================================
 
-for m = 1:length(TestList)
-    load(strcat(TestList{m},filesep,'formresp.mat'));
+for n = 1:length(TestList)
+    load(strcat(TestList{n},filesep,'formresp.mat'));
     
     
     catsize = size(formresp.v1f,4);
-    
+    arrresp = zeros(sz(1)*sz(2)*sz(3),catsize);
     for i=1:catsize
         t = formresp.l4resp{l3x,l3y}(:,:,:,i);
         arrresp(:,i) = t(:)-mean(t(:));
     end
     
     testX = arrresp';
-    testy = (floor((m-1)/properties.TestDataPerCat)+1)*ones(catsize,1);
-    testdata = [testX,testy];
+    testy = (floor((n-1)/properties.TestDataPerCat)+1)*ones(catsize,1);
+%     testdata = [testX,testy];
     
     
     % Set 'm' to the number of data points.
@@ -135,7 +136,7 @@ for m = 1:length(TestList)
     testnumRight = 0;
     
     testwrong = [];
-    
+    y_prime = zeros(size(testy));
     % For each sample...
     for i = 1 : m
         % Compute the scores for all categories.
@@ -143,6 +144,7 @@ for m = 1:length(TestList)
         
         [maxScore, category] = max(scores);
         TestScoreMat(i,:) = scores';
+        y_prime(i) = category;
         % Validate the result.
         if (category == testy(i))
             testnumRight = testnumRight + 1;

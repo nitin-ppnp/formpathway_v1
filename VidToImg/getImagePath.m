@@ -20,11 +20,11 @@ i = ismember({TestShapeDir.name},{'.','..','desktop.ini'});
 TestShapeDir(i)=[];
 TestImageList = {};
 for i=1:length(TestShapeDir)
-    OrientDir = dir([properties.TrainingPath,'/',TrainShapeDir(i).name]);
+    OrientDir = dir([properties.TestPath,'/',TestShapeDir(i).name]);
     t = ismember({OrientDir.name},{'.','..','desktop.ini'});
     OrientDir(t)=[];
     for j = 1:length(OrientDir)
-        TestImageList{i} = strcat(properties.TestPath,TestShapeDir(i).name,filesep,OrientDir(j).name);
+        TestImageList{i}{j} = strcat(properties.TestPath,TestShapeDir(i).name,filesep,OrientDir(j).name);
     end
 end
 

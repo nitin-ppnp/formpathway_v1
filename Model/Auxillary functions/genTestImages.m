@@ -27,8 +27,8 @@ end
 for i=1:length(testFolders)
     Imgs = dir(strcat(trainFolders{i},'\*.png'));
     for noisefac = 0.05:0.1:0.95
-        mkdir([testFolders{i},num2str(noisefac)]);
-        fileattrib([testFolders{i},num2str(noisefac)],'+w');
+        mkdir([testFolders{i},'_',num2str(noisefac)]);
+%         fileattrib([testFolders{i},num2str(noisefac)],'+w');
         for j=1:length(Imgs)
             im = imread([trainFolders{i},'/',Imgs(j).name]);
             %             im = rgb2gray(im);

@@ -108,8 +108,8 @@ properties.rfmap.v4yct = properties.l1.ygct(properties.l2.yct);
 
 
 %% L3
-properties.l3.xct = (properties.l3.fSize-1)/2+1:properties.l3.fDist:length(properties.l2.xct);
-properties.l3.yct = (properties.l3.fSize-1)/2+1:properties.l3.fDist:length(properties.l2.yct);
+properties.l3.xct = (properties.l3.fSize-1)/2+1:properties.l3.fDist:length(properties.l2.xct)-(properties.l3.fSize-1)/2;
+properties.l3.yct = (properties.l3.fSize-1)/2+1:properties.l3.fDist:length(properties.l2.yct)-(properties.l3.fSize-1)/2;
 
 % Get vertices
 
