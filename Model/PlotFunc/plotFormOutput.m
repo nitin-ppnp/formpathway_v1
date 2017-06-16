@@ -1,4 +1,4 @@
-function plotFormOutput(folder, timestamp)
+function plotFormOutput(folder, y,x)
 % plotFormOutput(pathkey, timestamp);
 %          plots responses of the form pathway of the Giese-Poggio 2003
 %          model to the stimuli of large shaded walkers. Takes folder as
@@ -16,14 +16,14 @@ function plotFormOutput(folder, timestamp)
 %
 %                Tested with MATLAB 8.4 on a Xeon E5-1620 3.6Ghz under W7
 %
-
-narginchk(1, 2)
-
-if nargin == 1
-    stimulipath = folder;
-elseif nargin == 2
-    stimulipath = fullfile(folder, timestamp);
-end
+stimulipath = folder;
+% % narginchk(1, 2)
+% % 
+% % if nargin == 1
+% %     stimulipath = folder;
+% % elseif nargin == 2
+% %     stimulipath = fullfile(folder, timestamp);
+% % end
 
 formdata = load(fullfile(stimulipath, 'formresp.mat'));
 V4 = formdata.formresp.v4; 
@@ -87,7 +87,7 @@ end
 %     imwrite(currFrame.cdata, fullfile(stimulipath,'formquiver',['q',listing{ind}]),'PNG');
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % plot the l3 rec field
-coords = formdata.formresp.properties.rfmap.l3(5,5,:,:);
+coords = formdata.formresp.properties.rfmap.l3(y(ind),x(ind),:,:);
 coords = squeeze(coords);
 patch(coords(:,2),coords(:,1),'b','FaceAlpha',0.3);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%

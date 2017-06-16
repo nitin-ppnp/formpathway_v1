@@ -7,7 +7,7 @@
 
 
 %% Set video folder. This folder contains videos for model input.
-videofolder = 'Videos';
+videofolder = 'Vid2process';
 
 % check for the existence of the directory
 folder = videofolder;
@@ -36,22 +36,25 @@ if properties.isTraining
             train = [train TrainList{m}{n}];
         end
     end
-    for m=1:length(TestList)
-        for n=1:length(TestList{m})
-            test = [test TestList{m}{n}];
-        end
-    end
+%     for m=1:length(TestList)
+%         for n=1:length(TestList{m})
+%             test = [test TestList{m}{n}];
+%         end
+%     end
 
     parfor i=1:length(train)
         computeFormOutput(train{i},properties);
     end
-    parfor i=1:length(test)
-        computeFormOutput(test{i},properties);
-    end
+%     parfor i=1:length(test)
+%         computeFormOutput(test{i},properties);
+%     end
 else
     % Read the videos and save them as the sequence of images. The model will
     % take these images as the input.
     conditionList = storeAVIasPNGset(folder);
+    parfor i=1:length(conditionList)
+        computeFormOutput(conditionList{i},properties);
+    end
 end
 %%
 
