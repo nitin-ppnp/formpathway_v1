@@ -15,6 +15,10 @@ catsize = size(formresp.v1f,4);
 % resp = zeros(catsize,length(properties.l3.yct),length(properties.l3.xct),properties.numShapes,properties.numDirections);
 resp = nan(catsize,length(properties.l3.yct),length(properties.l3.xct),properties.numShapes,properties.numDirections);
 
+% Gaussian weights
+sz = size(formresp.l4resp{1,1}(:,:,:,1));
+w = fspecial('gaussian',[sz(1),sz(2)],0.8);
+w = w/sum(w(:));
 
 %  Weight sharing and response calculation for each l3 neuron
 for i = 1:size(l3xy,1)

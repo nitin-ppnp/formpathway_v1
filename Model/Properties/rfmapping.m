@@ -148,4 +148,7 @@ properties.rfmap.l3xct = properties.l1.xgct(properties.l2.xct(properties.l3.xct)
 properties.rfmap.l3yct = properties.l1.ygct(properties.l2.yct(properties.l3.yct));
 
 
+%% 
 
+properties.reich.xct = (properties.reich.fSize-1)/2+1:properties.reich.fDist:length(properties.l3.xct)-(properties.reich.fSize-1)/2;
+properties.reich.yct = (properties.reich.fSize-1)/2+1:properties.reich.fDist:length(properties.l3.yct)-(properties.reich.fSize-1)/2;

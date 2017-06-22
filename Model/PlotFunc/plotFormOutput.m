@@ -38,7 +38,7 @@ ncols = size(V4, 2);
 % %         title(['Cells at row: ', num2str(rowInd), ' column: ', num2str(colInd)]);
 % %     end
 % % end
-
+neuron = formdata.formresp.properties.l3neuronToTrain;
 
 listing = getFrameList(stimulipath);
 
@@ -87,9 +87,26 @@ end
 %     imwrite(currFrame.cdata, fullfile(stimulipath,'formquiver',['q',listing{ind}]),'PNG');
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % plot the l3 rec field
-coords = formdata.formresp.properties.rfmap.l3(y(ind),x(ind),:,:);
+coords = formdata.formresp.properties.rfmap.l3(neuron(1),neuron(2),:,:);
 coords = squeeze(coords);
 patch(coords(:,2),coords(:,1),'b','FaceAlpha',0.3);
+
+coords = formdata.formresp.properties.rfmap.l3(neuron(1)-2,neuron(2),:,:);
+coords = squeeze(coords);
+patch(coords(:,2),coords(:,1),'b','FaceAlpha',0.3);
+
+coords = formdata.formresp.properties.rfmap.l3(neuron(1),neuron(2)-2,:,:);
+coords = squeeze(coords);
+patch(coords(:,2),coords(:,1),'b','FaceAlpha',0.3);
+
+coords = formdata.formresp.properties.rfmap.l3(neuron(1)+2,neuron(2),:,:);
+coords = squeeze(coords);
+patch(coords(:,2),coords(:,1),'b','FaceAlpha',0.3);
+
+coords = formdata.formresp.properties.rfmap.l3(neuron(1),neuron(2)+2,:,:);
+coords = squeeze(coords);
+patch(coords(:,2),coords(:,1),'b','FaceAlpha',0.3);
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 

@@ -1,5 +1,5 @@
 %% Model Params
-properties.isTraining = true;
+properties.isTraining = false;
 properties.TrainingPath = 'Data/Training_data/';
 properties.TestPath = 'Data/Test_data/';
 properties.l3neuronToTrain = [5,5];
@@ -7,7 +7,7 @@ properties.TestDataPerCat = 10;
 properties.TrainDataPerCat = 2;
 properties.frame.dim = [500,500];
 properties.numShapes = 3;
-properties.numDirections = 6;
+properties.numDirections = 12;  % [0 30 60 90 120 150 180 210 240 270 300 330]
 
 %% Layer 1 Properties
 properties.l1.gaborLen = 5;
@@ -32,6 +32,11 @@ properties.l2.normFactor = 1;
 % properties.l3.numV4rf = [5,5];
 properties.l3.fSize = 7;
 properties.l3.fDist = 2;
+
+%% Reichardt detector layer
+
+properties.reich.fSize = 5;
+% properties.reich.fDist = 1;  % Now it is fixed to value 1
 
 
 %% Receptive fields info
