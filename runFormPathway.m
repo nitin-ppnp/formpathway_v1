@@ -31,23 +31,23 @@ if properties.isTraining
     %     formrespList.test = cellfun(@(x) computeFormOutput(x,properties), TestList, 'UniformOutput', false);
     train = {};
     test = {};
-    for m=1:length(TrainList)
-        for n=1:length(TrainList{m})
-            train = [train TrainList{m}{n}];
-        end
-    end
-%     for m=1:length(TestList)
-%         for n=1:length(TestList{m})
-%             test = [test TestList{m}{n}];
+%     for m=1:length(TrainList)
+%         for n=1:length(TrainList{m})
+%             train = [train TrainList{m}{n}];
 %         end
 %     end
-
-    parfor i=1:length(train)
-        computeFormOutput(train{i},properties);
+    for m=1:length(TestList)
+        for n=1:length(TestList{m})
+            test = [test TestList{m}{n}];
+        end
     end
-%     parfor i=1:length(test)
-%         computeFormOutput(test{i},properties);
+
+%     parfor i=1:length(train)
+%         computeFormOutput(train{i},properties);
 %     end
+    parfor i=1:length(test)
+        computeFormOutput(test{i},properties);
+    end
 else
     % Read the videos and save them as the sequence of images. The model will
     % take these images as the input.

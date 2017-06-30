@@ -9,7 +9,8 @@ newsz(dim) = [];
 if type == 'sum'
     out_tens = squeeze(sum(reshape(permute(tensor,[dim,rem_dim]),[prod(sz(dim)),newsz])));
 elseif type == 'max'
-    out_tens = squeeze(max(reshape(permute(tensor,[dim,rem_dim]),[prod(sz(dim)),newsz])));
+    %     out_tens = squeeze(max(reshape(permute(tensor,[dim,rem_dim]),[prod(sz(dim)),newsz])));
+    error('Max not implemented yet');
 end
 % Normalize
 mi = min(out_tens(:));

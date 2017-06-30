@@ -17,22 +17,86 @@ resp = nan(catsize,length(properties.l3.yct),length(properties.l3.xct),propertie
 
 
 %  Weight sharing and response calculation for each l3 neuron
-for i = 1:size(l3xy,1)
-    
+if properties.MatlabRBFN
     for j=1:catsize
-        t = formresp.l4resp{l3xy(i,1),l3xy(i,2)}(:,:,:,j);
-        X = t(:)-mean(t(:));
-        scores = evaluateRBFN(Centers,betas,Theta,X');
-        resp(j,l3xy(i,1),l3xy(i,2),1,1) = scores(1);
-        resp(j,l3xy(i,1),l3xy(i,2),2,1:6) = scores(2:7);
-        resp(j,l3xy(i,1),l3xy(i,2),3,1:4) = scores(8:11);
+        for i = 1:size(l3xy,1)
+            
+            t = formresp.l4resp{l3xy(i,1),l3xy(i,2)}(:,:,:,j);
+            X = t(:)-mean(t(:));
+            scores = sim(rbfnet,X);
+            
+            %%%%%%%%%%%%%%%%%% Circle %%%%%%%%%%%%%%%%%%%%%
+            %         Circle 0degree (all orientations)
+            resp(j,l3xy(i,1),l3xy(i,2),1,:) = scores(1);
+            
+            %%%%%%%%%%%%%%%%%%% Rectangle %%%%%%%%%%%%%%%%%
+            %         Rectangle 0degree
+            resp(j,l3xy(i,1),l3xy(i,2),2,1) = scores(2);
+            %         Rectangle 30, 60, 90 degree
+            %         Sequence is not continuous because of the naming
+            %         The sequence is 0, 120, 150, 30, 60, 90
+            resp(j,l3xy(i,1),l3xy(i,2),2,2:4) = scores(5:7);
+            %         Rectangle 120, 150 degree
+            resp(j,l3xy(i,1),l3xy(i,2),2,5:6) = scores(3:4);
+            %         Other orientations
+            resp(j,l3xy(i,1),l3xy(i,2),2,7:12) = resp(j,l3xy(i,1),l3xy(i,2),2,1:6);
+            
+            %%%%%%%%%%%%%%%%%%% Triangle %%%%%%%%%%%%%%%%%
+            %         Triangle 0, 30, 60, 90 degree
+            resp(j,l3xy(i,1),l3xy(i,2),3,1:4) = scores(8:11);
+            %         Other orientations
+            resp(j,l3xy(i,1),l3xy(i,2),3,5:8) = resp(j,l3xy(i,1),l3xy(i,2),3,1:4);
+            resp(j,l3xy(i,1),l3xy(i,2),3,9:12) = resp(j,l3xy(i,1),l3xy(i,2),3,1:4);
+        end
+        
+        %     Normalization
+        t = squeeze(resp(j,:,:,:,:));
+        mi = min(t(:));
+        ma = max(t(:));
+        t(isnan(t)) = mi;
+        resp(j,:,:,:,:) = (t-mi)/(ma-mi);
     end
-    
+else
+    for j=1:catsize
+        for i = 1:size(l3xy,1)
+            
+            t = formresp.l4resp{l3xy(i,1),l3xy(i,2)}(:,:,:,j);
+            X = t(:)-mean(t(:));
+            
+            scores = evaluateRBFN(Centers,betas,Theta,X');
+            
+            %%%%%%%%%%%%%%%%%% Circle %%%%%%%%%%%%%%%%%%%%%
+            %         Circle 0degree (all orientations)
+            resp(j,l3xy(i,1),l3xy(i,2),1,:) = scores(1);
+            
+            %%%%%%%%%%%%%%%%%%% Rectangle %%%%%%%%%%%%%%%%%
+            %         Rectangle 0degree
+            resp(j,l3xy(i,1),l3xy(i,2),2,1) = scores(2);
+            %         Rectangle 30, 60, 90 degree
+            %         Sequence is not continuous because of the naming
+            %         The sequence is 0, 120, 150, 30, 60, 90
+            resp(j,l3xy(i,1),l3xy(i,2),2,2:4) = scores(5:7);
+            %         Rectangle 120, 150 degree
+            resp(j,l3xy(i,1),l3xy(i,2),2,5:6) = scores(3:4);
+            %         Other orientations
+            resp(j,l3xy(i,1),l3xy(i,2),2,7:12) = resp(j,l3xy(i,1),l3xy(i,2),2,1:6);
+            
+            %%%%%%%%%%%%%%%%%%% Triangle %%%%%%%%%%%%%%%%%
+            %         Triangle 0, 30, 60, 90 degree
+            resp(j,l3xy(i,1),l3xy(i,2),3,1:4) = scores(8:11);
+            %         Other orientations
+            resp(j,l3xy(i,1),l3xy(i,2),3,5:8) = resp(j,l3xy(i,1),l3xy(i,2),3,1:4);
+            resp(j,l3xy(i,1),l3xy(i,2),3,9:12) = resp(j,l3xy(i,1),l3xy(i,2),3,1:4);
+        end
+        
+        %     Normalization
+        t = squeeze(resp(j,:,:,:,:));
+        mi = min(t(:));
+        ma = max(t(:));
+        t(isnan(t)) = mi;
+        resp(j,:,:,:,:) = (t-mi)/(ma-mi);
+    end
 end
-mi = min(resp(:));
-ma = max(resp(:));
-resp(isnan(resp)) = mi; 
-resp = (resp-mi)/(ma-mi);
 
 
 end
