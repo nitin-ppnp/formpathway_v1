@@ -157,4 +157,3 @@ for n = 1:length(TestList)
     testaccuracy = testnumRight / m * 100;
     fprintf('Test accuracy: %d / %d, %.1f%%\n', testnumRight, m, testaccuracy);
 end
-%%

@@ -1,0 +1,55 @@
+function [ resp ] = classifierOP( dirPath)
+%CLASSIFIEROP Summary of this function goes here
+%   Detailed explanation goes here
+
+
+load('model.mat');
+load([dirPath,'/','formresp.mat']);
+
+[y,x] = meshgrid((1:length(properties.l3.yct)),(1:length(properties.l3.xct)));
+l3xy = [y(:),x(:)];
+catsize = size(formresp.v1f,4);
+
+% The lowest response is -0.45 and hence default response should be less
+% than that (-1*ones..)
+% resp = zeros(catsize,length(properties.l3.yct),length(properties.l3.xct),properties.numShapes,properties.numDirections);
+resp = nan(catsize,length(properties.l3.yct),length(properties.l3.xct),properties.numShapes,properties.numDirections);
+
+
+%  Weight sharing and response calculation for each l3 neuron
+for j=1:catsize
+    for i = 1:size(l3xy,1)
+        
+        t = formresp.l4resp{l3xy(i,1),l3xy(i,2)}(:,:,:,j);
+        X = t(:)-mean(t(:));
+        scores = evaluateRBFN(Centers,betas,Theta,X');
+        %%%%%%%%%%%%%%%%%%%%%%
+        %         Circle 0degree (all orientations)
+        resp(j,l3xy(i,1),l3xy(i,2),1,:) = scores(1);
+        
+        %         Rectangle 0degree
+        resp(j,l3xy(i,1),l3xy(i,2),2,1) = scores(2);
+        %         Rectangle 30, 60, 90 degree
+        %         Sequence is not continuous because of the naming
+        %         The sequence is 0, 120, 150, 30, 60, 90
+        resp(j,l3xy(i,1),l3xy(i,2),2,2:4) = scores(5:7);
+        %         Rectangle 120, 150 degree
+        resp(j,l3xy(i,1),l3xy(i,2),2,5:6) = scores(3:4);
+        
+        
+        %         Triangle 0, 30, 60, 90 degree
+        resp(j,l3xy(i,1),l3xy(i,2),3,1:4) = scores(8:11);
+    end
+    
+    %     Normalization
+    t = squeeze(resp(j,:,:,:,:));
+    mi = min(t(:));
+    ma = max(t(:));
+    t(isnan(t)) = mi;
+    resp(j,:,:,:,:) = (t-mi)/(ma-mi);
+end
+
+
+
+end
+
