@@ -1,0 +1,55 @@
+function [  ] = plotAnimacyResp(dirPath, orient, direc )
+%PLOTANIMACYRESP Summary of this function goes here
+%   Detailed explanation goes here
+
+%
+stimulipath = dirPath;
+
+formdata = load(fullfile(stimulipath, 'formresp.mat'));
+V4pos = [formdata.formresp.properties.rfmap.l3xct;formdata.formresp.properties.rfmap.l3yct];
+
+nrows = size(orient, 1);
+ncols = size(orient, 2);
+
+neuron = formdata.formresp.properties.l3neuronToTrain;
+
+listing = getFrameList(stimulipath);
+
+
+figure;
+
+for ind = 1:numel(listing)
+
+[posX, posY] = meshgrid(V4pos(1, :), V4pos(2, :));
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+temp = squeeze(orient(ind,:,:,:);
+[~,maxid] = max(temp(:));
+[m1,m2,m3] = ind2sub();
+V = zeros(size(orient,2),size(orient,3),size(orient,4));
+% % for i1 = 1:size(V,1)
+% %     for i2 = 1:size(V,2)
+% %         V(i1,i2,maxid(i1,i2)) = orient(ind,i1,i2,maxid(i1,i2));
+% %     end
+% % end
+V 
+%%%%%%%%%%%%%%%%%%%%%%%
+    
+    
+    img_in = im2double(imread(fullfile(stimulipath,listing{ind})));
+    if size(img_in,3) > 1, img_in(:,:,2:3) = []; end
+%     if ~isequal([fpos(3), fpos(4)], size(img_in))
+%         set(f, 'position', [0 0 size(img_in)])
+%     end
+    imshow(img_in, 'Border', 'tight'); hold on;
+    for i = 1:12
+%         oneresp = V4(:, :, i, ind);
+        oneresp = V(:, :, i);
+        quiver(posX, posY, oneresp*sin((i-1)*pi/8)*10, oneresp*cos((i-1)*pi/8)*10, 0);      
+    end
+
+
+waitforbuttonpress;
+end
+

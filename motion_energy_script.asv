@@ -1,7 +1,5 @@
-dirPath = 'Videos/RotatingAgent';
-out = classifierOP(dirPath);
-resp = Reich_det_new(dirPath);
-
+dirPath = 'Videos/straight';
+out = classifierOP(dirPat)
 for i=1:size(resp,1)
 t = squeeze(resp(i,:,:,:,:));
 % % t = marginalize(t,[1,2],'sum');
@@ -31,17 +29,17 @@ end
 
 %% Artificial gaussian fitting to the max (not implemented now)
 
-% % % orient = (orient-min(orient(:)))/(max(orient(:))-min(orient(:)));
-% % % direc = (direc-min(direc(:)))/(max(direc(:))-min(direc(:)));
-% % % 
-% % % gauss = fspecial('gaussian',[71,1],1);
-% % % gauss = circshift(gauss,[-35,0]);
+orient = (orient-min(orient(:)))/(max(orient(:))-min(orient(:)));
+direc = (direc-min(direc(:)))/(max(direc(:))-min(direc(:)));
+
+gauss = fspecial('gaussian',[71,1],1);
+gauss = circshift(gauss,[-35,0]);
 
 %% Motion Energy and circular average
 
-% % % e = exp(2*pi*1i*(0:size(orient,4)-1)/size(orient,4));
-% % % or = reshape(reshape(orient,size(orient,1)*size(orient,2)*size(orient,3),size(orient,4)).*e,size(orient));
-% % % or = sum(or,4);
+e = exp(2*pi*1i*(0:size(orient,4)-1)/size(orient,4));
+or = reshape(reshape(orient,size(orient,1)*size(orient,2)*size(orient,3),size(orient,4)).*e,size(orient));
+or = sum(or,4);
 
 di = reshape(reshape(direc,size(direc,1)*size(direc,2)*size(direc,3),size(direc,4)).*e,size(direc));
 di = sum(di,4);

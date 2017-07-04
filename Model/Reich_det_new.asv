@@ -16,9 +16,9 @@ reich_yct = properties.reich.yct;
 
 sz = size(tens);
 frame_skp = 1;
-sz_resp = [sz(1),sz(2),sz(3),4,8];
+sz_resp = [sz(1),sz(2),sz(3),3,12];
 sz_resp(1) = floor(sz_resp(1)/frame_skp);
-resp_v = zeros(sz_resp);   % Right now only for 4 velocities and 8 directions
+resp_v = zeros(sz_resp);   % Right now only for 3 velocities and 12 directions
 
 % Filter
 reich_filt = fspecial('gaussian',[fsize,fsize],0.1);
@@ -61,33 +61,61 @@ for i=1:frame_skp:sz(1)
     t = t+1;
 end
 
-
+maxvel = 6;
+arstrt = maxvel+1;
+arend = maxvel + size(filt_tens,2);
+coo = [2,0;2,1;1,2;0,2;-1,2;-2,1;-2,0;-2,-1;-1,-2;0,-2;1,-2;2,-1]/2;
+filt_tens = padarray(filt_tens,[0,maxvel,maxvel]);
 t = 1;
 for i=1:size(filt_tens)-1
-    resp_v(t,1:end,:,1,1) = filt_tens(i,1:end,:).*filt_tens(i+1,1:end,:);
-    for j=1:3 % velocities are 0,1,2,3
-        % 0 degree
-        resp_v(t,1:end-j,:,j+1,1) = filt_tens(i,1:end-j,:).*filt_tens(i+1,j+1:end,:) - filt_tens(i+1,1:end-j,:).*filt_tens(i,j+1:end,:);
-        % 45 degree
-        resp_v(t,1:end-j,1:end-j,j+1,2) = filt_tens(i,1:end-j,1:end-j).*filt_tens(i+1,j+1:end,j+1:end) - filt_tens(i+1,1:end-j,1:end-j).*filt_tens(i,j+1:end,j+1:end);
-        % 90 degree
-        resp_v(t,:,1:end-j,j+1,3) = filt_tens(i,:,1:end-j).*filt_tens(i+1,:,j+1:end) -  filt_tens(i+1,:,1:end-j).*filt_tens(i,:,j+1:end);
-        % 135 degree
-        resp_v(t,j+1:end,1:end-j,j+1,4) = filt_tens(i,j+1:end,1:end-j).*filt_tens(i+1,1:end-j,j+1:end) - filt_tens(i+1,j+1:end,1:end-j).*filt_tens(i,1:end-j,j+1:end);
-        % 180 degree
-        resp_v(t,j+1:end,:,j+1,5) = filt_tens(i,j+1:end,:).*filt_tens(i+1,1:end-j,:) - filt_tens(i+1,j+1:end,:).*filt_tens(i,1:end-j,:);
-        % 225 degree
-        resp_v(t,j+1:end,j+1:end,j+1,6) = filt_tens(i,j+1:end,j+1:end).*filt_tens(i+1,1:end-j,1:end-j) - filt_tens(i,j+1:end,j+1:end).*filt_tens(i+1,1:end-j,1:end-j);
-        % 270 degree
-        resp_v(t,:,j+1:end,j+1,7) = filt_tens(i,:,j+1:end).*filt_tens(i+1,:,j+1:end);
-        % 315 degree
-        resp_v(t,1:end-j,j+1:end,j+1,8) = filt_tens(i,1:end-j,j+1:end).*filt_tens(i+1,j+1:end,1:end-j);
+% % %     resp_v(t,1:end,:,1,1) = filt_tens(i,1:end,:).*filt_tens(i+1,1:end,:) - filt_tens(i+1,1:end,:).*filt_tens(i,1:end,:); % For zero vel
+    % %         for j=1:3 % velocities are 0,1,2,3
+    % %             % 0 degree
+    % %             resp_v(t,1:end-j,:,j+1,1) = filt_tens(i,1:end-j,:).*filt_tens(i+1,j+1:end,:) - filt_tens(i+1,1:end-j,:).*filt_tens(i,j+1:end,:);
+    % %             % 45 degree
+    % %             resp_v(t,1:end-j,1:end-j,j+1,2) = filt_tens(i,1:end-j,1:end-j).*filt_tens(i+1,j+1:end,j+1:end) - filt_tens(i+1,1:end-j,1:end-j).*filt_tens(i,j+1:end,j+1:end);
+    % %             % 90 degree
+    % %             resp_v(t,:,1:end-j,j+1,3) = filt_tens(i,:,1:end-j).*filt_tens(i+1,:,j+1:end) -  filt_tens(i+1,:,1:end-j).*filt_tens(i,:,j+1:end);
+    % %             % 135 degree
+    % %             resp_v(t,j+1:end,1:end-j,j+1,4) = filt_tens(i,j+1:end,1:end-j).*filt_tens(i+1,1:end-j,j+1:end) - filt_tens(i+1,j+1:end,1:end-j).*filt_tens(i,1:end-j,j+1:end);
+    % %             % 180 degree
+    % %             resp_v(t,j+1:end,:,j+1,5) = filt_tens(i,j+1:end,:).*filt_tens(i+1,1:end-j,:) - filt_tens(i+1,j+1:end,:).*filt_tens(i,1:end-j,:);
+    % %             % 225 degree
+    % %             resp_v(t,j+1:end,j+1:end,j+1,6) = filt_tens(i,j+1:end,j+1:end).*filt_tens(i+1,1:end-j,1:end-j) - filt_tens(i+1,j+1:end,j+1:end).*filt_tens(i,1:end-j,1:end-j);
+    % %             % 270 degree
+    % %             resp_v(t,:,j+1:end,j+1,7) = filt_tens(i,:,j+1:end).*filt_tens(i+1,:,j+1:end) - filt_tens(i+1,:,j+1:end).*filt_tens(i,:,j+1:end);
+    % %             % 315 degree
+    % %             resp_v(t,1:end-j,j+1:end,j+1,8) = filt_tens(i,1:end-j,j+1:end).*filt_tens(i+1,j+1:end,1:end-j) - filt_tens(i+1,1:end-j,j+1:end).*filt_tens(i,j+1:end,1:end-j);
+    % %         end
+    for j=2:2:6 % velocities are 0,2,4,6
+        for k=1:12
+            resp_v(t,:,:,j/2,k) = filt_tens(i,arstrt:arend,arstrt:arend).*filt_tens(i+1,arstrt+j*coo(k,1):arend+j*coo(k,1),arstrt+j*coo(k,2):arend+j*coo(k,2)) - filt_tens(i+1,arstrt:arend,arstrt:arend).*filt_tens(i,arstrt+j*coo(k,1):arend+j*coo(k,1),arstrt+j*coo(k,2):arend+j*coo(k,2));
+        end
     end
     t = t+1;
 end
-% Normalize
-% mi = min(resp_v(:));
-% ma = max(resp_v(:));
-% resp_v = (resp_v-mi)/(ma-mi);
+% % % Normalize
+% % mi = min(resp_v(:));
+% % ma = max(resp_v(:));
+% % resp_v = (resp_v-mi)/(ma-mi);
+
+fSize = properties.l3.fSize;
+fDist = properties.l3.fDist;
+fDim = size(resp_v);
+
+xstart= 1:fDist:fDim(2)-fSize+1;
+ystart = 1:fDist:fDim(3)-fSize+1;
+
+resp = zeros(fDim(1),length(xstart),length(ystart),fDim(4),fDim(4));
+
+for i = 1:length(xstart)
+    for j=1:length(ystart)
+        idxx = xstart(i):xstart(i)+fSize-1;
+        idxy = ystart(j):ystart(j)+fSize-1;
+        resp(:,i,j,) = v4resp(idxx,idxy,:,:);
+    end
+end
+
+
 end
 

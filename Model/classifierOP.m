@@ -90,11 +90,11 @@ else
         end
         
         %     Normalization
-        t = squeeze(resp(j,:,:,:,:));
-        mi = min(t(:));
-        ma = max(t(:));
-        t(isnan(t)) = mi;
-        resp(j,:,:,:,:) = (t-mi)/(ma-mi);
+% %         t = squeeze(resp(j,:,:,:,:));
+% %         mi = min(t(:));
+% %         ma = max(t(:));
+% %         t(isnan(t)) = mi;
+% %         resp(j,:,:,:,:) = (t-mi)/(ma-mi);
     end
 end
 
