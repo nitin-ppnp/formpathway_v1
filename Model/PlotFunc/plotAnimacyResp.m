@@ -1,4 +1,4 @@
-function [  ] = plotAnimacyResp(dirPath, orient, direc )
+function [  ] = plotAnimacyResp(dirPath,tensor )
 %PLOTANIMACYRESP Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -8,13 +8,13 @@ stimulipath = dirPath;
 formdata = load(fullfile(stimulipath, 'formresp.mat'));
 V4pos = [formdata.formresp.properties.rfmap.l3xct;formdata.formresp.properties.rfmap.l3yct];
 
-nrows = size(orient, 1);
-ncols = size(orient, 2);
 
 neuron = formdata.formresp.properties.l3neuronToTrain;
 
 listing = getFrameList(stimulipath);
 
+O = marginalize(tensor,[4,6,7],'sum');
+D = marginalize(tensor,[4,5,6],'sum');
 
 figure;
 
@@ -24,26 +24,21 @@ for ind = 1:numel(listing)
 
 
 %%%%%%%%%%%%%%%%%%%%%%%
-t = squeeze(direc(ind,:,:,:));
-[~,maxid] = max(t(:));
-[m1,m2,m3] = ind2sub(size(t),maxid);
-D = zeros(size(orient,2),size(orient,3),size(orient,4));
-% % for i1 = 1:size(V,1)
-% %     for i2 = 1:size(V,2)
-% %         V(i1,i2,maxid(i1,i2)) = orient(ind,i1,i2,maxid(i1,i2));
-% %     end
-% % end
-D(m1,m2,m3) = orient(ind,m1,m2,m3);
-
-t = squeeze(orient(ind,m1,m2,:));
-[~,m3] = max(t);
-O = zeros(size(orient,2),size(orient,3),size(orient,4));
-% % for i1 = 1:size(V,1)
-% %     for i2 = 1:size(V,2)
-% %         V(i1,i2,maxid(i1,i2)) = orient(ind,i1,i2,maxid(i1,i2));
-% %     end
-% % end
-O(m1,m2,m3) = orient(ind,m1,m2,m3); 
+% % % t = squeeze(space(:,:,ind));
+% % % [~,maxid] = max(t(:));
+% % % [m1,m2] = ind2sub(size(t),maxid);
+% % % 
+% % % t = squeeze(velocity(:,:,ind));
+% % % [~,maxid] = max(t(:));
+% % % [m3,m4] = ind2sub(size(t),maxid);
+% % % D = zeros(size(space,1),size(space,2),size(velocity,1));
+% % % D(m1,m2,m3) = velocity(m3,m4,ind);
+% % % 
+% % % t = squeeze(shape(ind,m1,m2,:));
+% % % [~,maxid] = max(t(:));
+% % % [m3,m4] = ind2sub(size(t),maxid);
+% % % O = zeros(size(space,1),size(space,2),size(shape,1));
+% % % O(m1,m2,m4) = shape(m3,m4,ind); 
 
 %%%%%%%%%%%%%%%%%%%%%%%
     
@@ -56,13 +51,12 @@ O(m1,m2,m3) = orient(ind,m1,m2,m3);
     imshow(img_in, 'Border', 'tight'); hold on;
     for i = 1:12
 %         oneresp = V4(:, :, i, ind);
-        oresp = 4*O(:, :, i);
+        oresp = 4*squeeze(O(ind,:, :, i));
         quiver(posX, posY, oresp*sin((i-1)*pi/6)*10, oresp*cos((i-1)*pi/6)*10, 0);
-        dresp = 4*D(:, :, i);
+        dresp = 4*squeeze(D(ind,:, :, i));
         quiver(posX, posY, dresp*sin((i-1)*pi/6)*10, dresp*cos((i-1)*pi/6)*10, 0);      
     end
 
-
-waitforbuttonpress;
+pause(0.05);
 end
 
