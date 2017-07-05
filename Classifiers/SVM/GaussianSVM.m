@@ -1,5 +1,5 @@
 function [trainedClassifier, validationAccuracy] = GaussianSVM(predictors,response)
-% [trainedClassifier, validationAccuracy] = MediumGaussian(predictors,response)
+% [trainedClassifier, validationAccuracy] = GaussianSVM(predictors,response)
 % returns a trained classifier and its accuracy.
 %  Input:
 %        predictors = X (Input data)
@@ -45,13 +45,7 @@ classificationSVM = fitcecoc(...
     response, ...
     'Learners', template, ...
     'Coding', 'onevsone', ...
-    'ClassNames', unique(response));
-  
-
-% Create the result struct with predict function
-predictorExtractionFcn = @(x) array2table(x, 'VariableNames', predictorNames);
-svmPredictFcn = @(x) predict(classificationSVM, x);
-trainedClassifier.predictFcn = @(x) svmPredictFcn(predictorExtractionFcn(x));
+    'ClassNames', unique(response));  
 
 % Add additional fields to the result struct
 trainedClassifier.ClassificationSVM = classificationSVM;
