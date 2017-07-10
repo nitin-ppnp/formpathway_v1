@@ -59,18 +59,9 @@ disp('Training the RBFN...');
 % Train the RBFN using 1 centers per category.
 [Centers, betas, Theta] = trainRBFN(X, y, 1, true);
 
-save('model.mat', 'Centers','betas','Theta','TestCats','TrainCats','properties');
-%%
-% ===================================
-%     Train RBF Network
-% ===================================
-
-disp('Training the RBFN...');
-
-% Train the RBFN using 1 centers per category.
-[Centers, betas, Theta] = trainRBFN(X, y, 1, true);
 
 save('model.mat', 'Centers','betas','Theta','TestCats','TrainCats','properties');
+
 %%
 % ========================================
 %       Measure Training Accuracy
@@ -112,9 +103,22 @@ if ~isempty(wrong)
 end
 
 accuracy = numRight / m * 100;
-fprintf('Training accuracy: %d / %d, %.1f%%\n', numRight, m, accuracy);
 
+fprintf('Training accuracy of RBFN: %d / %d, %.1f%%\n', numRight, m, accuracy);
 
+%%
+% ===================================
+%     Train and measure SVM classifier
+% ===================================
+
+disp('Training the SVM classifier...');
+
+[trainedClassifier, validationAccuracy] = GaussianSVM(X,y);
+
+fprintf('Training accuracy of SVM: %.2f%%\n', validationAccuracy*100);
+
+%%% Predicting class labels, TestData should have the same predictors
+% predict(trainedClassifier.ClassificationSVM, TestData);
 %%
 % ========================================
 %       Measure Validation data Accuracy

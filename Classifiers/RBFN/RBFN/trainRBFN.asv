@@ -170,14 +170,13 @@ function [Centers, betas, Theta] = trainRBFN(X_train, y_train, centersPerCategor
         y_c = (y_train == c);
 
         % Use the normal equations to solve for optimal theta.
-%         Theta(:, c) = pinv(X_activ' * X_activ) * X_activ' * y_c;
+        Theta(:, c) = pinv(X_activ' * X_activ) * X_activ' * y_c;
         
         % Don't perform any regularization (lambda = 0).
-        lambda = 0;
+%         lambda = 0.1;
         % Use the regularized normal equations to solve for optimal theta.
-        I_r = eye(size(X_activ,2));
-        I_r(1,1) = 0;
-        Theta(:, c) = pinv((X_activ' * X_activ) + lambda.*I_r) * X_activ' * y_c;
+          I_r = eye(size(X_activ,2));
+%         Theta(:, c) = pinv((X_activ' * X_activ) + lambda.*eye(size(X_activ,2))) * X_activ' * y_c;
     end
     
     % =============================================

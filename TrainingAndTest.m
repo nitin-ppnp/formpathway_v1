@@ -59,6 +59,7 @@ disp('Training the RBFN...');
 % Train the RBFN using 1 centers per category.
 [Centers, betas, Theta] = trainRBFN(X, y, 1, true);
 
+
 save('model.mat', 'Centers','betas','Theta','TestCats','TrainCats','properties');
 
 %%
