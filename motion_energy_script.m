@@ -1,6 +1,6 @@
 dirPath = 'Videos/align';
 out = classifierOP(dirPath);
-resp = Reich_det_new(dirPath);
+% resp = Reich_det_new(dirPath);
 
 % Get the indexes for maximum activity in x, y, speed, velocity direction 
 for i=1:size(resp,1)
