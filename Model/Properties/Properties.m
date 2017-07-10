@@ -1,10 +1,10 @@
 %% Model Params
-properties.isTraining = false;
+properties.isTraining = 1;
 properties.TrainingPath = 'Data/Training_data/';
 properties.TestPath = 'Data/Test_data/';
 properties.l3neuronToTrain = [5,5];
 properties.TestDataPerCat = 10;
-properties.TrainDataPerCat = 2;
+properties.TrainDataPerCat = 1;
 properties.frame.dim = [500,500];
 properties.numShapes = 3;
 properties.numDirections = 12;  % [0 30 60 90 120 150 180 210 240 270 300 330]
